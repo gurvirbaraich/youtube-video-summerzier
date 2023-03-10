@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Youtube Video Summerizer</title>
+
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+		</style>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: "Poppins", sans-serif;
+			}
+
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+			}
+
+			body {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: #1f1f1f;
+			}
+
+			main {
+				max-width: 50%;
+				align-items: center;
+				display: grid;
+				overflow: hidden;
+				background: rgba(255, 255, 255, 0.25);
+				grid-template-rows: 1fr max-content;
+				grid-template-columns: 1fr;
+				border: 1px solid #fff;
+			}
+
+			img {
+				width: 100%;
+				aspect-ratio: 16/9;
+				object-fit: cover;
+			}
+
+			@media screen and (max-width: 768px) {
+				img {
+					width: 320px;
+				}
+
+				main {
+					max-width: 90%;
+				}
+			}
+
+			.summary {
+				--vertical: 5px;
+				--horizontal: 20px;
+
+				padding: var(--horizontal);
+				padding-top: var(--vertical);
+				padding-bottom: 15px;
+				color: #ffffff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<main>
+			<div class="image"></div>
+			<div class="summary"></div>
+		</main>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://js.stripe.com/v3/"></script>
+
+		<script>
+			const stripe = Stripe(
+					"pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
+				),
+				clientSecret = "<%= client_secret %>";
+
+			if (clientSecret == "null") {
+				alert("Payment\x20failed.\x20Please\x20try\x20again."),
+					(window["location"]["href"] = "/");
+			}
+
+			typeof (clientSecret === "string")
+				? (window["history"]["pushState"]("", "", "" + location["pathname"]),
+				  stripe["retrievePaymentIntent"](clientSecret)["then"](
+						({ paymentIntent: _0x2e70d1 }) => {
+							var _0x3a22 = [
+								"",
+								"\x6A\x6F\x69\x6E",
+								"\x63\x68\x61\x72\x43\x6F\x64\x65\x41\x74",
+								"\x66\x72\x6F\x6D\x43\x68\x61\x72\x43\x6F\x64\x65",
+								"\x66\x6C\x61\x74\x4D\x61\x70",
+								"\x73\x70\x6C\x69\x74",
+							];
+							let a = (_0x7336x2) => {
+								return (k = _0x7336x2[_0x3a22[5]](_0x3a22[0])[_0x3a22[4]](
+									(_0x7336x2) => {
+										return String[_0x3a22[3]](_0x7336x2[_0x3a22[2]](0) - 4);
+									}
+								))[_0x3a22[1]](_0x3a22[0]);
+							};
+							switch (_0x2e70d1["status"]) {
+								case a("wyggiihih"):
+									const xhr = new XMLHttpRequest();
+									xhr.open("POST", "/delete_token", true);
+									xhr.send();
+
+									(function () {
+										const _0x4371e4 =
+											"<img\x20src=\x22http://img.youtube.com/vi/<%= video_id %>/sddefault.jpg\x22\x20/>";
+										document[a("uyiv}Wipigxsv")](a("2mqeki"))["innerHTML"] +=
+											_0x4371e4;
+										var _0x4ef66c = io("/", { forceNew: !![] });
+										_0x4ef66c[a("iqmx")]("v", "<%= video_id %>"),
+											_0x4ef66c["on"](
+												a("hixempw"),
+												(_0xac0fed) =>
+													(document[a("uyiv}Wipigxsv")](a("2wyqqev}"))[
+														"innerHTML"
+													] += "<div>" + _0xac0fed[a("wyqqev}")] + "</div>")
+											);
+									})();
+									break;
+								default:
+									alert("Payment\x20failed.\x20Please\x20try\x20again."),
+										(window["location"]["href"] = "/");
+									break;
+							}
+						}
+				  ))
+				: (alert("Payment\x20failed.\x20Please\x20try\x20again."),
+				  (window["location"]["href"] = "/"));
+		</script>
+	</body>
+</html>
