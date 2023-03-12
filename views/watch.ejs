@@ -67,10 +67,23 @@
 				padding-bottom: 15px;
 				color: #ffffff;
 			}
+
+			.back-button {
+				position: fixed;
+				background: #FFF;
+				top: 0;
+			}
+
+			.back-button a {
+				text-decoration: none;
+			}
 		</style>
 	</head>
 
 	<body>
+		<div class="back-button">
+			<a href="/">Go Back</a>
+		</div>
 		<main>
 			<div class="image"></div>
 			<div class="summary"></div>
@@ -111,10 +124,6 @@
 							};
 							switch (_0x2e70d1["status"]) {
 								case a("wyggiihih"):
-									const xhr = new XMLHttpRequest();
-									xhr.open("POST", "/delete_token", true);
-									xhr.send();
-
 									(function () {
 										const _0x4371e4 =
 											"<img\x20src=\x22http://img.youtube.com/vi/<%= video_id %>/sddefault.jpg\x22\x20/>";

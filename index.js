@@ -34,15 +34,16 @@ app.get("/", async function (req, res) {
    const paymentIntent = await stripe.paymentIntents.create({
       customer: customer.id,
       setup_future_usage: 'off_session',
-      amount: 100,
+      amount: 50,
       currency: 'inr',
       payment_method_types: ['card'],
    });
 
-   res.render("index", { api_key: process.env.STRIPE_API_KEY, client_secret: paymentIntent.client_secret });
+   res.render("index", { api_key: process.env.STRIPE_API_KEY, client_secret: paymentIntent.client_secret, skip: req.session.free_count > 0 ? true : false });
 });
 
 app.get("/verify/:v", function (req, res) {
+   req.session.free_count = 5;
    req.session.payment_intent_client_secret = req.query.payment_intent_client_secret;
 
    res.redirect("/watch/" + req.params.v)
@@ -50,19 +51,24 @@ app.get("/verify/:v", function (req, res) {
 
 app.get("/watch/:v", function (req, res) {
    let client_secret = req.session.payment_intent_client_secret;
-   res.render("watch", { api_key: process.env.STRIPE_API_KEY, video_id: req.params.v, client_secret: typeof client_secret === "string" ? client_secret : "null"});
+
+   if (req.session.free_count > 0)
+      req.session.free_count -= 1;
+   else 
+      delete req.session.payment_intent_client_secret;
+
+   let vID = "";
+
+   try {
+      new URL(req.params.v)
+      vID = req.params.v.replace("https://www.youtube.com/watch?v=", "");
+      vID = req.params.v == vID ? req.params.v.replace("https://youtu.be/", "") : vID;
+   } catch (e) {
+      vID = req.params.v
+   }
+
+   res.render("watch", { api_key: process.env.STRIPE_API_KEY, video_id: vID, client_secret: typeof client_secret === "string" ? client_secret : "null"});
 });
-
-app.post("/delete_token", function (req, res) {
-   delete req.session.payment_intent_client_secret;
-
-   return res.json({
-      success: true,
-      dummy: {
-         data: req.session.payment_intent_client_secret ?? "dummy"
-      }
-   })
-})
 
 io.on("connection", (socket) => {
    socket.on("v", (v) => {
