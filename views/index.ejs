@@ -1,163 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Youtube Video Summarizer</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youtube Video Summarizer</title>
 
-		<style>
-			@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
-		</style>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+    </style>
 
-		<style>
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-				font-family: "Poppins", sans-serif;
-			}
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
 
-			html,
-			body {
-				width: 100%;
-				height: 100dvh;
-			}
+      html,
+      body {
+        width: 100%;
+        height: 100dvh;
+      }
 
-			body {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				background-color: #1f1f1f;
-			}
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1f1f1f;
+      }
 
-			form {
-				max-width: 80% !important;
-				gap: 10px;
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-			}
+      form {
+        max-width: 80% !important;
+        gap: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
 
-			@media screen and (max-width: 768px) {
-				form {
-					flex-direction: column;
-				}
+      @media screen and (max-width: 768px) {
+        form {
+          flex-direction: column;
+        }
 
-				button {
-					width: 300px;
-				}
-			}
+        button {
+          width: 300px;
+        }
+      }
 
-			input {
-				width: 300px;
-				padding: 10px;
-				border: 1px solid #ccc;
-				font-size: 16px;
-				box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-			}
+      input {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      }
 
-			button {
-				padding: 10px 20px;
-				border: none;
-				background-color: #007bff;
-				color: #fff;
-				font-size: 16px;
-				cursor: pointer;
-				box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-			}
+      button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+      }
 
-			#payment-form {
-				display: none;
-			}
-		</style>
-	</head>
+      #payment-form {
+        display: none;
+      }
+    </style>
+  </head>
 
-	<body>
-		<form class="form" action="/watch" method="GET">
-			<input
-				type="text"
-				name="v"
-				placeholder="Enter Youtube Video URL"
-				required
-			/>
-			<button type="submit">Generate</button>
-		</form>
+  <body>
+    <form class="form" action="/watch" method="GET">
+      <input
+        type="text"
+        name="v"
+        placeholder="Enter Youtube Video URL"
+        required
+      />
+      <button type="submit">Generate</button>
+    </form>
 
-		<form id="payment-form">
-			<div id="payment-element">
-				<!-- Elements will create form elements here -->
-			</div>
-			<button id="submit">Submit</button>
-			<div id="error-message">
-				<!-- Display error message to your customers here -->
-			</div>
-		</form>
+    <form id="payment-form">
+      <div id="payment-element">
+        <!-- Elements will create form elements here -->
+      </div>
+      <button id="submit">Submit</button>
+      <div id="error-message">
+        <!-- Display error message to your customers here -->
+      </div>
+    </form>
 
-		<script src="https://js.stripe.com/v3/"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 
-		<script>
-			const form = document.querySelector(".form");
-			const payment_form = document.querySelector("#payment-form");
+    <script>
+      const form = document.querySelector(".form");
+      const payment_form = document.querySelector("#payment-form");
 
-			form.addEventListener("submit", (e) => {
-				e.preventDefault();
+      form.addEventListener("submit", (e) => {
+      	e.preventDefault();
 
-				form.style.display = "none";
+      	form.style.display = "none";
 
-				if (!<%= skip %>)
-					payment_form.style.display = "block";
-				else
-					window.location.pathname = "/watch/" + form.querySelector("input").value;
-			});
-		</script>
+      	if (!<%= skip %>)
+      		payment_form.style.display = "block";
+      	else
+      		window.location.pathname = "/watch/" + form.querySelector("input").value;
+      });
+    </script>
 
-		<script>
-			if (!<%= skip %>) {
-				const stripe = Stripe(
-					"pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
-				);
+    <script>
+      if (!<%= skip %>) {
+      	const stripe = Stripe(
+      		"pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
+      	);
 
-				const options = {
-					clientSecret: "<%= client_secret %>",
-				};
+      	const options = {
+      		clientSecret: "<%= client_secret %>",
+      	};
 
-				// Set up Stripe.js and Elements to use in checkout form, passing the client secret obtained in step 3
-				const elements = stripe.elements(options);
+      	// Set up Stripe.js and Elements to use in checkout form, passing the client secret obtained in step 3
+      	const elements = stripe.elements(options);
 
-				// Create and mount the Payment Element
-				const paymentElement = elements.create("payment");
-				paymentElement.mount("#payment-element");
+      	// Create and mount the Payment Element
+      	const paymentElement = elements.create("payment");
+      	paymentElement.mount("#payment-element");
 
-				payment_form.addEventListener('submit', async (event) => {
-					event.preventDefault();
+      	payment_form.addEventListener('submit', async (event) => {
+      		event.preventDefault();
 
-					const {
-						protocol,
-						host,
-					} = window.location;
+      		const {
+      			protocol,
+      			host,
+      		} = window.location;
 
-					const { error } = await stripe.confirmPayment({
-						//`Elements` instance that was used to create the Payment Element
-						elements,
-						confirmParams: {
-							return_url: `${protocol}//${host}/verify/` + form.querySelector("input").value,
-						},
-					});
+      		let vID = ""
+      		try {
+         new URL(form.querySelector("input").value)
+         vID = form.querySelector("input").value.replace("https://www.youtube.com/watch?v=", "");
+         vID = form.querySelector("input").value == vID ? form.querySelector("input").value.replace("https://youtu.be/", "") : vID;
+      } catch (e) {
+         vID = form.querySelector("input").value
+      }
 
-					if (error) {
-						// This point will only be reached if there is an immediate error when
-						// confirming the payment. Show error to your customer (for example, payment
-						// details incomplete)
-						const messageContainer = document.querySelector('#error-message');
-						messageContainer.textContent = error.message;
-					} else {
-						// Your customer will be redirected to your `return_url`. For some payment
-						// methods like iDEAL, your customer will be redirected to an intermediate
-						// site first to authorize the payment, then redirected to the `return_url`.
-					}
-				});
-			}
-		</script>
-	</body>
+      		const { error } = await stripe.confirmPayment({
+      			//`Elements` instance that was used to create the Payment Element
+      			elements,
+      			confirmParams: {
+      				return_url: `${protocol}//${host}/verify/` + vID,
+      			},
+      		});
+
+      		if (error) {
+      			// This point will only be reached if there is an immediate error when
+      			// confirming the payment. Show error to your customer (for example, payment
+      			// details incomplete)
+      			const messageContainer = document.querySelector('#error-message');
+      			messageContainer.textContent = error.message;
+      		} else {
+      			// Your customer will be redirected to your `return_url`. For some payment
+      			// methods like iDEAL, your customer will be redirected to an intermediate
+      			// site first to authorize the payment, then redirected to the `return_url`.
+      		}
+      	});
+      }
+    </script>
+  </body>
 </html>
